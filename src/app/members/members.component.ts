@@ -10,12 +10,13 @@ import { Observable } from 'rxjs';
   styleUrls: ['./members.component.sass'],
   providers: [UsersService]
 })
-export class MembersComponent implements OnInit, CanActivate {
+export class MembersComponent implements OnInit {
 
-  membersList: Array<object> = [];
+  membersList = [];
   headingsList = ['Id', 'Name', 'Email', 'Country', 'Date', 'Status'];
   showAddNewUserBoxes = false;
-  showBtnTxt = '';
+  showAddUserBtn = false;
+  showEditUserBtn = false;
   addTeamMateFormG: FormGroup;
   id: AbstractControl;
   name: AbstractControl;
@@ -23,7 +24,8 @@ export class MembersComponent implements OnInit, CanActivate {
   country: AbstractControl;
 
   constructor(private userS: UsersService) {
-    this.membersList = userS.getUsersList()
+    this.membersList = userS.getUsersList();
+
     this.addTeamMateFormG = new FormGroup({
       id: new FormControl('', [Validators.required,]),
       name: new FormControl('', [Validators.required,]),
@@ -35,33 +37,33 @@ export class MembersComponent implements OnInit, CanActivate {
     this.email = this.addTeamMateFormG.get('email');
     this.country = this.addTeamMateFormG.get('country');
 
-    this.id.setValue('11')
-    this.name.setValue('z')
-    this.email.setValue('z@gmail.com')
-    this.country.setValue('India')
-  }
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.userS.getObs();
+    // this.id.setValue('11')
+    // this.name.setValue('z')
+    // this.email.setValue('z@gmail.com')
+    // this.country.setValue('India')
   }
 
-  addOrEditUser(index: string | number) {
-    if (String(index).includes('add')) {
-      if (this.showBtnTxt.includes('Update')) {
-        this.showAddNewUserBoxes = false;
-        this.userS.updateUserByIndex(Number(index), this.addTeamMateFormG.value)
-        this.addTeamMateFormG.reset()
-      } else {
-        console.warn('Adddddddddddd');
-        this.showAddNewUserBoxes = false;
-        // console.warn('Add');
-        this.userS.addUserToList(Object.assign(this.addTeamMateFormG.value, { date: new Date().toDateString(), status: 'Active' }));
-        this.addTeamMateFormG.reset()
-      }
-    } else if (index >= 0) {
-      this.showAddNewUserBoxes = true;
-      this.showBtnTxt = 'Update TeamMate'
-      this.addTeamMateFormG.patchValue(this.membersList[index])
+  addUser() {
+    this.showAddNewUserBoxes = false;
+    this.showAddUserBtn = false;
+    if (this.membersList.findIndex((x) => x.id == this.addTeamMateFormG.value.id) < 0) {//-1 means there is no user so need to add
+      this.userS.addUserToList(Object.assign(this.addTeamMateFormG.value, { date: new Date().toDateString(), status: 'Active' }));
+      this.addTeamMateFormG.reset()
     }
+  }
+
+  editUser(index: number) {
+    localStorage.setItem('i', String(index));
+    this.showAddNewUserBoxes = true;
+    this.showEditUserBtn = true;
+    this.showAddUserBtn = false;
+    this.addTeamMateFormG.patchValue(this.membersList[index])
+  }
+  updateUser() {
+    this.showAddNewUserBoxes = false;
+    this.showEditUserBtn = false;
+    this.userS.updateUserByIndex(Number(localStorage.getItem('i')), this.addTeamMateFormG.value)
+    this.addTeamMateFormG.reset()
   }
 
   deleteUser(id: any) {
@@ -69,8 +71,9 @@ export class MembersComponent implements OnInit, CanActivate {
   }
 
   createMember() {
-    this.showBtnTxt = 'Add Teammate'
     this.showAddNewUserBoxes = !this.showAddNewUserBoxes;
+    this.showAddUserBtn = true;
+    this.showEditUserBtn = false;
     this.addTeamMateFormG.reset()
   }
 

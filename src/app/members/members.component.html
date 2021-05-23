@@ -13,7 +13,7 @@
         <div class="col col-sm col-md col-lg col-xl"></div>
         <div class="col col-sm col-md col-lg col-xl"></div>
     </div>
-    <form [formGroup]="addTeamMateFormG" (ngSubmit)="addOrEditUser('add')">
+    <form [formGroup]="addTeamMateFormG" (ngSubmit)="addUser()">
         <div class="row text-left" *ngIf="showAddNewUserBoxes">
             <div class="col col-sm col-md col-lg col-xl text-center">
                 <input type="text" placeholder="enter id" id="id" name="id" formControlName="id" style="width: 5vw;" required>
@@ -28,9 +28,11 @@
                 <input type="text" placeholder="enter country" id="country" name="country" formControlName="country" style="width: 10vw;margin-left: -30%;" required>
             </div>
             <div class="col col-sm col-md col-lg col-xl"></div>
-            <div class="col col-sm col-md col-lg col-xl"></div>
             <div class="col col-sm col-md col-lg col-xl">
-                <button type="submit" [disabled]="!addTeamMateFormG.valid">{{showBtnTxt}}</button>
+                <button type="submit" *ngIf="showAddUserBtn" [disabled]="!addTeamMateFormG.valid">Add</button>
+            </div>
+            <div class="col col-sm col-md col-lg col-xl">
+                <button *ngIf="showEditUserBtn" [disabled]="!addTeamMateFormG.valid" (click)="updateUser()">Update</button>
             </div>
         </div>
     </form>
@@ -54,7 +56,7 @@
             <p>{{userData.status}}</p>
         </div>
         <div class="col col-sm col-md col-lg col-xl">
-            <a (click)="addOrEditUser(i)"> Edit</a>
+            <a (click)="editUser(i)"> Edit</a>
         </div>
         <div class="col col-sm col-md col-lg col-xl">
             <a (click)="deleteUser(i)">Delete</a>

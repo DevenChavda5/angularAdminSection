@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs/internal/Subject';
-import { HeaderComponent } from '../header/header.component';
+import demoUsers from '../../assets/jsonData/demoUsers.json'
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService implements CanActivate {
+export class UsersService {
 
   private usersList = []
   private isUserLoggedIn = new Subject<boolean>();
@@ -15,22 +15,18 @@ export class UsersService implements CanActivate {
 
   constructor(private route: Router) {
     this.observeUserSession = this.isUserLoggedIn.asObservable();
-
-    this.usersList.push({ id: 1, name: 'a', email: 'a@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
-    this.usersList.push({ id: 2, name: 'b', email: 'b@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
-    this.usersList.push({ id: 3, name: 'c', email: 'c@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
-    this.usersList.push({ id: 4, name: 'd', email: 'd@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
-    this.usersList.push({ id: 5, name: 'e', email: 'e@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
-    this.usersList.push({ id: 6, name: 'f', email: 'f@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
-    this.usersList.push({ id: 7, name: 'g', email: 'g@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    demoUsers.forEach(user => {
+      this.usersList.push(Object.assign(user, { date: new Date().toDateString() }));
+    })
+    // this.usersList.push({ id: 1, name: 'a', email: 'a@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    // this.usersList.push({ id: 2, name: 'b', email: 'b@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    // this.usersList.push({ id: 3, name: 'c', email: 'c@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    // this.usersList.push({ id: 4, name: 'd', email: 'd@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    // this.usersList.push({ id: 5, name: 'e', email: 'e@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    // this.usersList.push({ id: 6, name: 'f', email: 'f@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
+    // this.usersList.push({ id: 7, name: 'g', email: 'g@gmail.com', country: 'India', date: new Date().toDateString(), status: 'Active' })
   }
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    return this.observeUserSession;
-  }
 
-  redirectLoggedInTo() {
-
-  }
   addUserToList(userDetails: Object) {
     const obj = JSON.parse(JSON.stringify(userDetails))
     if (this.usersList.findIndex(p => p.id == obj.id) >= 0) {
@@ -49,7 +45,6 @@ export class UsersService implements CanActivate {
 
   deleteUserFromList(i: number) {
     this.usersList.splice(i, 1);
-    console.warn(this.usersList);
   }
 
   loginUser() {
