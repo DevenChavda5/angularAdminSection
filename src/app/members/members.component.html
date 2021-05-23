@@ -1,0 +1,65 @@
+<h3 class="p-4"><b>Members List</b></h3>
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-10"></div>
+        <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+            <button class="bg-success text-light" (click)="createMember()">Create a new member</button>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div *ngFor="let head of headingsList" class="col col-sm col-md col-lg col-xl">
+            <p>{{head}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl"></div>
+        <div class="col col-sm col-md col-lg col-xl"></div>
+    </div>
+    <form [formGroup]="addTeamMateFormG" (ngSubmit)="addOrEditUser('add')">
+        <div class="row text-left" *ngIf="showAddNewUserBoxes">
+            <div class="col col-sm col-md col-lg col-xl text-center">
+                <input type="text" placeholder="enter id" id="id" name="id" formControlName="id" style="width: 5vw;" required>
+            </div>
+            <div class="col col-sm col-md col-lg col-xl">
+                <input type="text" placeholder="enter name" id="name" name="name" formControlName="name" style="width: 8vw;" required>
+            </div>
+            <div class="col col-sm col-md col-lg col-xl">
+                <input type="email" placeholder="Enter email" id="email" name="email" formControlName="email" style="width: 10vw;margin-left: -15%;" required>
+            </div>
+            <div class="col col-sm col-md col-lg col-xl pr-5">
+                <input type="text" placeholder="enter country" id="country" name="country" formControlName="country" style="width: 10vw;margin-left: -30%;" required>
+            </div>
+            <div class="col col-sm col-md col-lg col-xl"></div>
+            <div class="col col-sm col-md col-lg col-xl"></div>
+            <div class="col col-sm col-md col-lg col-xl">
+                <button type="submit" [disabled]="!addTeamMateFormG.valid">{{showBtnTxt}}</button>
+            </div>
+        </div>
+    </form>
+    <div class="row text-center" *ngFor="let userData of membersList;let i = index">
+        <div class="col col-sm col-md col-lg col-xl">
+            <p>{{userData.id}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <p>{{userData.name}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <p>{{userData.email}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <p>{{userData.country}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <p>{{userData.date}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <p>{{userData.status}}</p>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <a (click)="addOrEditUser(i)"> Edit</a>
+        </div>
+        <div class="col col-sm col-md col-lg col-xl">
+            <a (click)="deleteUser(i)">Delete</a>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-md navbar-light bg-dark">
+    <a class="navbar-brand text-light" routerLink=''>Admin Section</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link text-light" routerLink='members' *ngIf="showRoutes">Members <span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" routerLink='products' *ngIf="showRoutes">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" routerLink='reporting' *ngIf="showRoutes">Reporting</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" routerLink='users' *ngIf="showRoutes">Users</a>
+            </li>
+        </ul>
+        <div class="my-2 my-lg-0">
+            <div class="row">
+                <div class="col">
+                    <h6 class="mr-1 text-light" *ngIf="showRoutes">{{signedInUserName}}</h6>
+                </div>
+                <div class="col">
+                    <a routerLink='' *ngIf="!showRoutes" class="text-light mr-1">Login</a>
+                    <a routerLink='' *ngIf="showRoutes" class="text-light" (click)="logOutUser()">Logout</a>
+                </div>
+            </div>
+            <!-- <a routerLink='' *ngIf="!showRoutes" class="text-light mr-1">{{signedInUserName}}</a> -->
+        </div>
+        <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+    </div>
+</nav>

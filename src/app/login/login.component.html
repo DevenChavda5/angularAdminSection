@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="row text-center" style="padding-top: 10%;">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <form [formGroup]="userForm" (ngSubmit)="loginUser()">
+                <input type="text" placeholder="Enter name here" name="name" formControlName="userName" required />
+                <p></p>
+                <input type="email" placeholder="Enter email here" name="email" formControlName="userEmail" required>
+                <p></p>
+                <input type="password" placeholder="Enter password here" name="pass" formControlName="userPass" required>
+                <p></p>
+                <!-- (click)="loginUser()" -->
+                <button type="submit" [disabled]="!userForm.valid" required>Login User</button>
+            </form>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
+    </div>
+</div>
