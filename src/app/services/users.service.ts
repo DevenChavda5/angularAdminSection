@@ -10,11 +10,15 @@ import demoUsers from '../../assets/jsonData/demoUsers.json'
 export class UsersService {
 
   private usersList = []
-  private isUserLoggedIn = new Subject<boolean>();
-  private observeUserSession: Observable<any>;
+  isUserSignedIn = false;
+  private isUserLoggedInSub = new Subject<boolean>();
+  private observeUserSession: Observable<boolean>;
 
   constructor(private route: Router) {
-    this.observeUserSession = this.isUserLoggedIn.asObservable();
+    this.observeUserSession = this.isUserLoggedInSub.asObservable();
+    this.observeUserSession.subscribe(obs => {
+      this.isUserSignedIn = obs;
+    })
     demoUsers.forEach(user => {
       this.usersList.push(Object.assign(user, { date: new Date().toDateString() }));
     })
@@ -48,13 +52,13 @@ export class UsersService {
   }
 
   loginUser() {
-    this.isUserLoggedIn.next(true);
+    this.isUserLoggedInSub.next(true);
     this.route.navigateByUrl('das');
   }
 
   logOutUser() {
     localStorage.clear();
-    this.isUserLoggedIn.next(false);
+    this.isUserLoggedInSub.next(false);
   }
 
   getObs() {
@@ -62,7 +66,7 @@ export class UsersService {
   }
 
   getSub() {
-    return this.isUserLoggedIn;
+    return this.isUserLoggedInSub;
   }
 
   getUsersList() {
